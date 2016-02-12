@@ -3,7 +3,6 @@
       possibly even randomized starting positions
     * add rewards that score points 
     * add ability to select player avatar and start game button
-    * add sound fx and music!
     * add pause functionality
     * add scenes and game over screen and start screen
 */
@@ -125,10 +124,15 @@ Player.prototype.render = function(){
 };
 
 Player.prototype.handleInput = function(input){    
-    if(input === 'left'){ this.x -= 1; }
-    else if (input === 'right'){ this.x += 1; }
-    else if (input === 'up'){ this.y -= 1; }
-    else if (input === 'down'){ this.y += 1; }
+    if(input === 'left' && !paused){ this.x -= 1; }
+    else if (input === 'right' && !paused){ this.x += 1; }
+    else if (input === 'up' && !paused){ this.y -= 1; }
+    else if (input === 'down' && !paused){ this.y += 1; }
+    else if (input === 'pause'){ 
+        //do something to pause game
+        if(paused){ paused = false; }
+        else { paused = true; console.log("paused!")}        
+    }
     else{ return false; }    
 };
 
@@ -161,6 +165,7 @@ allEnemies.push(enemy3);
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
+        32: 'pause',  //space bar
         37: 'left',
         38: 'up',
         39: 'right',

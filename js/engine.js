@@ -26,6 +26,7 @@ var Engine = (function(global) {
         soundMusic = new Audio('sound/beachfront.mp3'),  //new background music
         soundFxHit = new Audio('sound/chord.wav'),
         soundFxScore = new Audio('sound/chimes.wav'),
+        paused,
         lastTime;
 
     canvas.width = 505;
@@ -34,8 +35,6 @@ var Engine = (function(global) {
     doc.body.appendChild(soundMusic);
     global.soundFxHit = doc.body.appendChild(soundFxHit);
     global.soundFxScore = doc.body.appendChild(soundFxScore);
-
-    
 
     //Setting up background music
     soundMusic.autoplay = true;
@@ -58,8 +57,11 @@ var Engine = (function(global) {
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
-        update(dt);
-        render();
+        if(!global.paused) {
+            update(dt);
+            render();    
+        }
+        
 
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
@@ -77,6 +79,7 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
+        paused = false;
         reset();
         lastTime = Date.now();
         main();
@@ -200,4 +203,6 @@ var Engine = (function(global) {
      * from within their app.js files.
      */
     global.ctx = ctx;
+    global.paused = paused;
+
 })(this);
