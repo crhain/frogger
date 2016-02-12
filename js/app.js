@@ -1,10 +1,10 @@
-/*CRH - TO DO 2/11/2016:
-    * rationalize sound architecture for game    
+/*CRH - TO DO 2/11/2016: 
     * add rewards that score points 
     * add scenes and game over screen and start screen
     * add ability to select player avatar and start game button
     * add randomized enemy speeds (to make harder)/
       possibly even randomized starting positions
+    * add timer  
     
 */
 
@@ -12,29 +12,71 @@
 var yOffset = 83,
     xOffset = 101;
 
-//Object to track and display score
-var Score = function(x, y, score){
-    if(score === undefined){ this.score = 50;}
-    else { this.score = 50; }    
-    this.x = x;
-    this.y = y;
-}
 
-//Score update method
-Score.prototype.update = function(){
-    //Does nothing at the moment
+
+
+// Now write your own player class
+// This class requires an update(), render() and
+// a handleInput() method.
+var Player = function(startX, startY, sprite) {
+
+    //Set sprint to default if none entered 
+    //!!!! remeber to add any sprites you use to engine.js Resources.load!!!
+    if(sprite === undefined) { this.sprite = 'images/char-boy.png'; }
+    else { this.sprite = sprite; }
+    //StartX, StartY give players starting position in "tiles"
+    this.startX = startX; //initial x position
+    this.startY = startY; //initial y position
+    this.x = startX;  //current x position
+    this.y = startY;  //current y position
     
-}
+};
 
-Score.prototype.render = function(){
-    //Draw score
-    ctx.fillStyle = "white";
-    ctx.strokeStyle = "black";
-    ctx.font = "36px sans-serif";
-    ctx.fillText("SCORE: " + this.score, this.x * xOffset, this.y * yOffset);
-    ctx.strokeText("SCORE: " + this.score, this.x * xOffset, this.y * yOffset);
-}
+Player.prototype.update = function(){
+    
+    //check bounds
+    if(this.x > 4) { this.x = 4; }
+    else if(this.x < 0) { this.x = 0; }
+    if(this.y > 5) { this.y = 5; }
+    else if(this.y < 0) { this.y = 0; }
+    //check for water (reset) 
+    if(this.y === 0) { 
+        score.score += 5;
+        soundFxScore.play();
+        this.reset(); 
+    }  
+    
+};
 
+Player.prototype.render = function(){
+    ctx.drawImage(Resources.get(this.sprite), this.x * xOffset, this.y * yOffset);
+};
+
+Player.prototype.handleInput = function(input){    
+    if(input === 'left' && !paused){ this.x -= 1; }
+    else if (input === 'right' && !paused){ this.x += 1; }
+    else if (input === 'up' && !paused){ this.y -= 1; }
+    else if (input === 'down' && !paused){ this.y += 1; }
+    else if (input === 'pause'){ 
+        //do something to pause game
+        if(paused) { 
+            console.log("Game un-paused!"); 
+            if(soundMusic.paused){ soundMusic.play(); }
+            paused = false; 
+        }
+        else { 
+            paused = true; 
+            console.log("Game paused!"); 
+            if(!soundMusic.paused){ soundMusic.pause(); }
+        }        
+    }
+    else{ return false; }    
+};
+
+Player.prototype.reset = function(){
+    this.x = this.startX;
+    this.y = this.startY;
+};
 
 // Enemies our player must avoid
 var Enemy = function(x, y, speed) {
@@ -87,66 +129,30 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x * xOffset, this.y * yOffset);
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
-var Player = function(startX, startY, sprite) {
 
-    //Set sprint to default if none entered 
-    //!!!! remeber to add any sprites you use to engine.js Resources.load!!!
-    if(sprite === undefined) { this.sprite = 'images/char-boy.png'; }
-    else { this.sprite = sprite; }
-    //StartX, StartY give players starting position in "tiles"
-    this.startX = startX; //initial x position
-    this.startY = startY; //initial y position
-    this.x = startX;  //current x position
-    this.y = startY;  //current y position
+//Object to track and display score
+var Score = function(x, y, score){
+    if(score === undefined){ this.score = 50;}
+    else { this.score = 50; }    
+    this.x = x;
+    this.y = y;
+}
+
+//Score update method
+Score.prototype.update = function(){
+    //Does nothing at the moment
     
-};
+}
 
-Player.prototype.update = function(){
-    
-    //check bounds
-    if(this.x > 4) { this.x = 4; }
-    else if(this.x < 0) { this.x = 0; }
-    if(this.y > 5) { this.y = 5; }
-    else if(this.y < 0) { this.y = 0; }
-    //check for water (reset) 
-    if(this.y === 0) { 
-        score.score += 5;
-        soundFxScore.play();
-        this.reset(); 
-    }  
-    
-};
+Score.prototype.render = function(){
+    //Draw score
+    ctx.fillStyle = "white";
+    ctx.strokeStyle = "black";
+    ctx.font = "36px sans-serif";
+    ctx.fillText("SCORE: " + this.score, this.x * xOffset, this.y * yOffset);
+    ctx.strokeText("SCORE: " + this.score, this.x * xOffset, this.y * yOffset);
+}
 
-Player.prototype.render = function(){
-    ctx.drawImage(Resources.get(this.sprite), this.x * xOffset, this.y * yOffset);
-};
-
-Player.prototype.handleInput = function(input){    
-    if(input === 'left' && !paused){ this.x -= 1; }
-    else if (input === 'right' && !paused){ this.x += 1; }
-    else if (input === 'up' && !paused){ this.y -= 1; }
-    else if (input === 'down' && !paused){ this.y += 1; }
-    else if (input === 'pause'){ 
-        //do something to pause game
-        if(paused) { 
-            if(soundMusic.paused){ soundMusic.play(); }
-            paused = false; 
-        }
-        else { 
-            paused = true; console.log("paused!"); 
-            if(!soundMusic.paused){ soundMusic.pause(); }
-        }        
-    }
-    else{ return false; }    
-};
-
-Player.prototype.reset = function(){
-    this.x = this.startX;
-    this.y = this.startY;
-};
 
 
 //Score instance

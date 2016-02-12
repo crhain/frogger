@@ -14,6 +14,15 @@
  * a little simpler to work with.
  */
 
+/*This function declaration is very intersting.  It is doing several things:
+ 1. it is being executed immediately because it is wraped in pranthesis
+ 2. it takes a paramater global that is being set to the keyword this (see end of declartion)
+ 3. this is defaulting to global scope, so effectively global is like using this with reference to
+    global scope!
+ 4.  it creates a closure for all functions within it.  Even after it is finished running, the
+     variables declared within will remain, only accesible to functions within unless they are made global
+ 5.  main() function will continually fire because it is wraped in requestAnimationFrame
+*/
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
@@ -26,7 +35,7 @@ var Engine = (function(global) {
         soundMusic = new Audio('sound/beachfront.mp3'),  //new background music
         soundFxHit = new Audio('sound/chord.wav'),      //sound fx
         soundFxScore = new Audio('sound/chimes.wav'),   //sound fx
-        paused,
+        paused,         //boolean flag indicating if the game is paused or not
         lastTime;
 
     canvas.width = 505;
