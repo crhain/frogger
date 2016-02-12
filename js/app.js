@@ -1,10 +1,11 @@
 /*CRH - TO DO 2/11/2016:
+    * rationalize sound architecture for game    
+    * add rewards that score points 
+    * add scenes and game over screen and start screen
+    * add ability to select player avatar and start game button
     * add randomized enemy speeds (to make harder)/
       possibly even randomized starting positions
-    * add rewards that score points 
-    * add ability to select player avatar and start game button
-    * add pause functionality
-    * add scenes and game over screen and start screen
+    
 */
 
 //Define some global here, because why not?
@@ -130,8 +131,14 @@ Player.prototype.handleInput = function(input){
     else if (input === 'down' && !paused){ this.y += 1; }
     else if (input === 'pause'){ 
         //do something to pause game
-        if(paused){ paused = false; }
-        else { paused = true; console.log("paused!")}        
+        if(paused) { 
+            if(soundMusic.paused){ soundMusic.play(); }
+            paused = false; 
+        }
+        else { 
+            paused = true; console.log("paused!"); 
+            if(!soundMusic.paused){ soundMusic.pause(); }
+        }        
     }
     else{ return false; }    
 };

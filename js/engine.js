@@ -24,22 +24,20 @@ var Engine = (function(global) {
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
         soundMusic = new Audio('sound/beachfront.mp3'),  //new background music
-        soundFxHit = new Audio('sound/chord.wav'),
-        soundFxScore = new Audio('sound/chimes.wav'),
+        soundFxHit = new Audio('sound/chord.wav'),      //sound fx
+        soundFxScore = new Audio('sound/chimes.wav'),   //sound fx
         paused,
         lastTime;
 
     canvas.width = 505;
     canvas.height = 606;
     doc.body.appendChild(canvas);
-    doc.body.appendChild(soundMusic);
-    global.soundFxHit = doc.body.appendChild(soundFxHit);
-    global.soundFxScore = doc.body.appendChild(soundFxScore);
-
-    //Setting up background music
-    soundMusic.autoplay = true;
-    soundMusic.loop = true;
-    soundMusic.volume = 0.25;
+    
+    //Set sound files to global so they can be called from app.js
+    global.soundMusic = soundMusic;
+    global.soundFxHit = soundFxHit;
+    global.soundFxScore = soundFxScore;
+    
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -81,6 +79,7 @@ var Engine = (function(global) {
     function init() {
         paused = false;
         reset();
+        playMusic();
         lastTime = Date.now();
         main();
     }
@@ -182,6 +181,17 @@ var Engine = (function(global) {
      */
     function reset() {
         // noop
+        //reset music
+        //reset score?
+        //reset player position?
+
+    }
+
+    function playMusic(){
+         //Setting up background music
+        soundMusic.autoplay = true;
+        soundMusic.loop = true;
+        soundMusic.volume = 0.25;   
     }
 
     /* Go ahead and load all of the images we know we're going to need to
