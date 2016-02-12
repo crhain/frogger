@@ -1,5 +1,5 @@
 /*CRH - TO DO 2/11/2016:
-    * add simple enemy movement & edge collision (should scroll to other side of screen)
+    * add player/enemy collision checking and rules
 */
 
 //Define some global here, because why not?
@@ -25,12 +25,26 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+
+     //check for player collision
+     var collisionBuffer = .33;
+    if(Math.abs(this.x - player.x) < collisionBuffer && this.y === player.y){
+        //Collision has occured.  Need to reset player
+        console.log("I hit the player at", player.x);
+
+        player.reset();
+    }
+
+    //console.log(player.x)
+
+
     //move enemy
     this.x += this.speed * dt;
 
+
+
     //scroll enemy to other side when it runs off screen
     if(this.x > 5){ this.x = 0; }
-
 
 
 
