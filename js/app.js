@@ -78,18 +78,17 @@ Player.prototype.reset = function(){
     this.y = this.startY;
 };
 
-// Enemies our player must avoid
+// Enemies our player must avoid - subclass of Player
 var Enemy = function(x, y, speed) {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
+    //Inherits from player object by calling playing
+    Player.call(this, x, y, 'images/enemy-bug.png');
+    //setup enemy specific variables
     if(speed === undefined) { speed = 1; }
-    this.x = x;  //initial x position
-    this.y = y;  //initial y position
-    this.speed = speed;
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
+    else { this.speed = speed; }            
 };
+
+Enemy.prototype = Object.create(Player.prototype); //inherits Player methods
+Enemy.prototype.constructor = Enemy;  //gives it correct constructor method
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -120,15 +119,14 @@ Enemy.prototype.update = function(dt) {
     //scroll enemy to other side when it runs off screen
     if(this.x > 5){ this.x = 0; }
 
-
-
 };
 
+/*
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x * xOffset, this.y * yOffset);
 };
-
+*/
 
 //Object to track and display score
 var Score = function(x, y, score){
