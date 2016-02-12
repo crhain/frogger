@@ -1,15 +1,37 @@
 /*CRH - TO DO 2/11/2016:
-    * add wsd keys
-    * add scoring system
     * add randomized enemy speeds (to make harder)/
       possibly even randomized starting positions
-    * add ability to select player avatar
+    * add ability to select player avatar and start game button
     * add sound fx and music!
 */
 
 //Define some global here, because why not?
 var yOffset = 83,
     xOffset = 101;
+
+//Object to track and display score
+var Score = function(x, y, score){
+    if(score === undefined){ this.score = 50;}
+    else { this.score = 50; }    
+    this.x = x;
+    this.y = y;
+}
+
+//Score update method
+Score.prototype.update = function(){
+    //Does nothing at the moment
+    
+}
+
+Score.prototype.render = function(){
+    //Draw score
+    ctx.fillStyle = "white";
+    ctx.strokeStyle = "black";
+    ctx.font = "36px sans-serif";
+    ctx.fillText("SCORE: " + this.score, this.x * xOffset, this.y * yOffset);
+    ctx.strokeText("SCORE: " + this.score, this.x * xOffset, this.y * yOffset);
+}
+
 
 // Enemies our player must avoid
 var Enemy = function(x, y, speed) {
@@ -36,17 +58,18 @@ Enemy.prototype.update = function(dt) {
     if(Math.abs(this.x - player.x) < collisionBuffer && this.y === player.y){
         //Collision has occured.  Need to reset player
         console.log("I hit the player at", player.x);
-
+        score.score -= 10
         player.reset();
+        if(score.score <= 0){
+            //Do some stuff if score hits zero - maybe end game
+            score.score = 0;
+        }
     }
 
     //console.log(player.x)
 
-
     //move enemy
     this.x += this.speed * dt;
-
-
 
     //scroll enemy to other side when it runs off screen
     if(this.x > 5){ this.x = 0; }
@@ -63,13 +86,16 @@ Enemy.prototype.render = function() {
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
-var Player = function(startX, startY) {
+var Player = function(startX, startY, sprite) {
+
+    if(sprite === undefined) { this.sprite = 'images/char-boy.png'; }
+    else { this.sprite = sprite; }
     //StartX, StartY give players starting position in "tiles"
     this.startX = startX; //initial x position
     this.startY = startY; //initial y position
     this.x = startX;  //current x position
     this.y = startY;  //current y position
-    this.sprite = 'images/char-boy.png';
+    
 };
 
 Player.prototype.update = function(){
@@ -80,7 +106,10 @@ Player.prototype.update = function(){
     if(this.y > 5) { this.y = 5; }
     else if(this.y < 0) { this.y = 0; }
     //check for water (reset) 
-    if(this.y === 0) { this.reset(); }  
+    if(this.y === 0) { 
+        score.score += 5;
+        this.reset(); 
+    }  
     
 };
 
@@ -102,12 +131,16 @@ Player.prototype.reset = function(){
 };
 
 
-// Now instantiate your objects.
-var player = new Player(2, 5);
+//Score instance
+var score = new Score(0, 1);
+
+// Player instance
+var player = new Player(2, 5, 'images/char-cat-girl.png');
+
+//Enemy instances and add to allEnemies array
 var enemy1 = new Enemy(1, 1, 3);
-// Place all enemy objects in an array called allEnemies
 allEnemies.push(enemy1);
-// Place the player object in a variable called player
+
 var enemy2 = new Enemy(3, 2, 1);
 allEnemies.push(enemy2);
 
