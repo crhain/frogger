@@ -1,5 +1,10 @@
 /*CRH - TO DO 2/11/2016:
-    * add player/enemy collision checking and rules
+    * add wsd keys
+    * add scoring system
+    * add randomized enemy speeds (to make harder)/
+      possibly even randomized starting positions
+    * add ability to select player avatar
+    * add sound fx and music!
 */
 
 //Define some global here, because why not?
@@ -103,7 +108,11 @@ var enemy1 = new Enemy(1, 1, 3);
 // Place all enemy objects in an array called allEnemies
 allEnemies.push(enemy1);
 // Place the player object in a variable called player
+var enemy2 = new Enemy(3, 2, 1);
+allEnemies.push(enemy2);
 
+var enemy3 = new Enemy(5, 3, 3);
+allEnemies.push(enemy3);
 
 
 // This listens for key presses and sends the keys to your
