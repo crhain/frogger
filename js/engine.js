@@ -23,11 +23,24 @@ var Engine = (function(global) {
         win = global.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
+        soundMusic = new Audio('sound/beachfront.mp3'),  //new background music
+        soundFxHit = new Audio('sound/chord.wav'),
+        soundFxScore = new Audio('sound/chimes.wav'),
         lastTime;
 
     canvas.width = 505;
     canvas.height = 606;
     doc.body.appendChild(canvas);
+    doc.body.appendChild(soundMusic);
+    global.soundFxHit = doc.body.appendChild(soundFxHit);
+    global.soundFxScore = doc.body.appendChild(soundFxScore);
+
+    
+
+    //Setting up background music
+    soundMusic.autoplay = true;
+    soundMusic.loop = true;
+    soundMusic.volume = 0.25;
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.

@@ -1,8 +1,11 @@
 /*CRH - TO DO 2/11/2016:
     * add randomized enemy speeds (to make harder)/
       possibly even randomized starting positions
+    * add rewards that score points 
     * add ability to select player avatar and start game button
     * add sound fx and music!
+    * add pause functionality
+    * add scenes and game over screen and start screen
 */
 
 //Define some global here, because why not?
@@ -58,6 +61,7 @@ Enemy.prototype.update = function(dt) {
     if(Math.abs(this.x - player.x) < collisionBuffer && this.y === player.y){
         //Collision has occured.  Need to reset player
         console.log("I hit the player at", player.x);
+        soundFxHit.play();
         score.score -= 10
         player.reset();
         if(score.score <= 0){
@@ -88,6 +92,8 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 var Player = function(startX, startY, sprite) {
 
+    //Set sprint to default if none entered 
+    //!!!! remeber to add any sprites you use to engine.js Resources.load!!!
     if(sprite === undefined) { this.sprite = 'images/char-boy.png'; }
     else { this.sprite = sprite; }
     //StartX, StartY give players starting position in "tiles"
@@ -108,6 +114,7 @@ Player.prototype.update = function(){
     //check for water (reset) 
     if(this.y === 0) { 
         score.score += 5;
+        soundFxScore.play();
         this.reset(); 
     }  
     
@@ -146,6 +153,8 @@ allEnemies.push(enemy2);
 
 var enemy3 = new Enemy(5, 3, 3);
 allEnemies.push(enemy3);
+
+
 
 
 // This listens for key presses and sends the keys to your
