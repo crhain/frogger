@@ -1,11 +1,12 @@
-/*CRH - TO DO 2/11/2016: 
-    * add rewards that score points 
+'use strict';
+/*CRH - TO DO 2/11/2016:
+    * add rewards that score points
     * add scenes and game over screen and start screen
     * add ability to select player avatar and start game button
     * add randomized enemy speeds (to make harder)/
       possibly even randomized starting positions
-    * add timer  
-    
+    * add timer
+
 */
 
 //Define some global here, because why not?
@@ -20,7 +21,7 @@ var yOffset = 83,
 // a handleInput() method.
 var Player = function(startX, startY, sprite) {
 
-    //Set sprint to default if none entered 
+    //Set sprint to default if none entered
     //!!!! remeber to add any sprites you use to engine.js Resources.load!!!
     if(sprite === undefined) { this.sprite = 'images/char-boy.png'; }
     else { this.sprite = sprite; }
@@ -29,48 +30,48 @@ var Player = function(startX, startY, sprite) {
     this.startY = startY; //initial y position
     this.x = startX;  //current x position
     this.y = startY;  //current y position
-    
+
 };
 
 Player.prototype.update = function(){
-    
+
     //check bounds
     if(this.x > 4) { this.x = 4; }
     else if(this.x < 0) { this.x = 0; }
     if(this.y > 5) { this.y = 5; }
     else if(this.y < 0) { this.y = 0; }
-    //check for water (reset) 
-    if(this.y === 0) { 
+    //check for water (reset)
+    if(this.y === 0) {
         score.score += 5;
         soundFxScore.play();
-        this.reset(); 
-    }  
-    
+        this.reset();
+    }
+
 };
 
 Player.prototype.render = function(){
     ctx.drawImage(Resources.get(this.sprite), this.x * xOffset, this.y * yOffset);
 };
 
-Player.prototype.handleInput = function(input){    
+Player.prototype.handleInput = function(input){
     if(input === 'left' && !paused){ this.x -= 1; }
     else if (input === 'right' && !paused){ this.x += 1; }
     else if (input === 'up' && !paused){ this.y -= 1; }
     else if (input === 'down' && !paused){ this.y += 1; }
-    else if (input === 'pause'){ 
+    else if (input === 'pause'){
         //do something to pause game
-        if(paused) { 
-            console.log("Game un-paused!"); 
+        if(paused) {
+            console.log("Game un-paused!");
             if(soundMusic.paused){ soundMusic.play(); }
-            paused = false; 
+            paused = false;
         }
-        else { 
-            paused = true; 
-            console.log("Game paused!"); 
+        else {
+            paused = true;
+            console.log("Game paused!");
             if(!soundMusic.paused){ soundMusic.pause(); }
-        }        
+        }
     }
-    else{ return false; }    
+    else{ return false; }
 };
 
 Player.prototype.reset = function(){
@@ -84,7 +85,7 @@ var Enemy = function(x, y, speed) {
     Player.call(this, x, y, 'images/enemy-bug.png');
     //setup enemy specific variables
     if(speed === undefined) { speed = 1; }
-    else { this.speed = speed; }            
+    else { this.speed = speed; }
 };
 
 Enemy.prototype = Object.create(Player.prototype); //inherits Player methods
@@ -111,14 +112,11 @@ Enemy.prototype.update = function(dt) {
         }
     }
 
-    //console.log(player.x)
-
     //move enemy
     this.x += this.speed * dt;
 
     //scroll enemy to other side when it runs off screen
     if(this.x > 5){ this.x = 0; }
-
 };
 
 /*
@@ -131,7 +129,7 @@ Enemy.prototype.render = function() {
 //Object to track and display score
 var Score = function(x, y, score){
     if(score === undefined){ this.score = 50;}
-    else { this.score = 50; }    
+    else { this.score = 50; }
     this.x = x;
     this.y = y;
 }
@@ -139,7 +137,7 @@ var Score = function(x, y, score){
 //Score update method
 Score.prototype.update = function(){
     //Does nothing at the moment
-    
+
 }
 
 Score.prototype.render = function(){
@@ -170,8 +168,6 @@ var enemy3 = new Enemy(5, 3, 3);
 allEnemies.push(enemy3);
 
 
-
-
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
@@ -185,8 +181,6 @@ document.addEventListener('keyup', function(e) {
         68: 'right',    //this corresponds to D
         83: 'down',     //this corresponds to S
         87: 'up'       //this corresponds to W
-
-
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
