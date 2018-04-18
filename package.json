@@ -1,0 +1,25 @@
+{
+  "name": "frogger",
+  "version": "1.0.0",
+  "description": "A simple game of frogger",
+  "homepage": "https://github.com/crhwebdev/frontend-nanodegree-arcade-game",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crhwebdev/frontend-nanodegree-arcade-game.git"
+  },
+  "author": "Carl Hain",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/crhwebdev/frontend-nanodegree-arcade-game/issues"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.7.1"
+  }
+}
