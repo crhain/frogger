@@ -28,8 +28,8 @@ var Engine = (function(global) {
      * create the canvas element, grab the 2D context for that canvas
      * set the canvas elements height/width and add it to the DOM.
      */
-    var doc = global.document,
-        win = global.window,
+    var doc = document,
+        win = window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
         soundMusic = new Audio('sound/beachfront.mp3'),  //new background music

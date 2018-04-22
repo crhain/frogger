@@ -5,7 +5,7 @@
  * a simple "caching" layer so it will reuse cached images if you attempt
  * to load the same image multiple times.
  */
-var allEnemies = [];
+
 
 
 (function() {

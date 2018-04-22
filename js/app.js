@@ -1,19 +1,10 @@
-'use strict';
-/*CRH - TO DO 2/11/2016:
-    * add rewards that score points
-    * add scenes and game over screen and start screen
-    * add ability to select player avatar and start game button
-    * add randomized enemy speeds (to make harder)/
-      possibly even randomized starting positions
-    * add timer
 
-*/
+var allEnemies = [];
+
 
 //Define some global here, because why not?
 var yOffset = 83,
     xOffset = 101;
-
-
 
 
 // Now write your own player class

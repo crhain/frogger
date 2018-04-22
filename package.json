@@ -8,7 +8,11 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "parcel index.html --open",
+    "build": "parcel build index.html --public-url ./",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
+    "postdeploy": "rimraf dist"
   },
   "repository": {
     "type": "git",
@@ -20,6 +24,8 @@
     "url": "https://github.com/crhwebdev/frontend-nanodegree-arcade-game/issues"
   },
   "devDependencies": {
-    "parcel-bundler": "^1.7.1"
+    "gh-pages": "^1.1.0",
+    "parcel-bundler": "^1.7.1",
+    "rimraf": "^2.6.2"
   }
 }
